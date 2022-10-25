@@ -19,9 +19,6 @@ export class Player extends Character
 
         // subscribe to event KeyManager
         window.addEventListener("KeyManager", () => {
-            if (!this.active)
-                return;
-
             if (KeyManager.isPressed('w'))
                 this.move({x: 0, y: -speed});
             if (KeyManager.isPressed('d'))
@@ -78,9 +75,12 @@ export class Player extends Character
         return dead;
     }
 
-    destroy()
+    destroy(doThink = true)
     {
         super.destroy();
+        if (!doThink)
+            return;
+
         Game.lose();
     }
 }

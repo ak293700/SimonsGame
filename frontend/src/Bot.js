@@ -41,9 +41,12 @@ export class Bot extends Character
         }, 30);
     }
 
-    destroy()
+    destroy(doThink = true)
     {
         super.destroy();
+        if (!doThink)
+            return;
+
         if (Game.bots.length === 0)
             Game.win();
     }

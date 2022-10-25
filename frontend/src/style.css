@@ -92,11 +92,13 @@ body {
     background: black;
 }
 
-#hp-container {
+#overlay-info {
     position: fixed;
     left: 10px;
     top: 10px;
+}
 
+#hp-container {
     width: 200px;
     height: 30px;
 
@@ -124,13 +126,12 @@ body {
     top: 50%;
     translate: -50% -50%;
 
-    /*width: 300px;*/
     text-align: center;
     font-family: Arial, sans-serif;
     font-weight: bold;
     font-size: 60px;
 
-    /*    add border to the text*/
+    /* add border to the text */
     border-radius: 10px;
     background: rgba(255, 255, 255, 0.5);
 }

@@ -2,9 +2,14 @@ export class KeyManager
 {
     static keyPressed = [];
     static event = new Event('KeyManager');
+    static alreadyInit = false
 
     static init()
     {
+        if (KeyManager.alreadyInit)
+            return;
+        this.alreadyInit = true;
+
         window.addEventListener('keydown', (event) => {
             const key = event.key;
             if (!KeyManager.isPressed(key))
@@ -20,6 +25,7 @@ export class KeyManager
         setInterval(() => {
             window.dispatchEvent(KeyManager.event);
         }, 10);
+
     }
 
     static isPressed(key)
