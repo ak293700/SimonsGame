@@ -1,5 +1,5 @@
 import {areCollapsing, normalize} from "./utils.js";
-import {bots} from "./script.js";
+import {Game} from "./Game.js";
 
 export class Weapon
 {
@@ -99,15 +99,15 @@ export class Bullet
         {
             this.setPos({x: pos.x + this.speedVector.x * this.speed, y: pos.y + this.speedVector.y * this.speed});
 
-            for (let i = 0; i < bots.length; i++)
+            for (let i = 0; i < Game.bots.length; i++)
             {
-                const bot = bots[i];
+                const bot = Game.bots[i];
                 if (areCollapsing(pos, this.radius, bot.getPos(), bot.radius))
                 {
                     const dead = bot.takeDamage(this.damage);
                     if (dead)
                     {
-                        bots.splice(i, 1);
+                        Game.bots.splice(i, 1);
                         bot.destroy()
                         this.destroy()
 
