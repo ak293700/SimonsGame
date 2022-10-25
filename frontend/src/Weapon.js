@@ -9,36 +9,60 @@ export class Weapon
     }
 }
 
-class Bullet
+export class Bullet
 {
     entity;
     pos;
-    speedVect;
+    speedVector;
+    intervalFunction;
 
-    constructor(pos, speedVect)
+    constructor(pos, speedVector)
     {
-        this.setPos(pos);
+        console.log('create bullet');
+
+        this.speedVector = speedVector;
+
         this.entity = document.createElement("div");
         this.entity.classList.add("bullet")
 
+        document.body.appendChild(this.entity);
 
+        console.log(this.getPos())
+
+        this.setPos(pos);
+        this.intervalFunction = setInterval(() => {
+            this.update()
+        }, 10)
     }
 
-    setPos(newPos)
+    getPos()
     {
-        // if (newPos.x < this.radius)
-        //     newPos.x = this.radius;
-        // else if (newPos.x > window.innerWidth - this.radius)
-        //     newPos.x = window.innerWidth - this.radius;
-        //
-        // if (newPos.y < this.radius)
-        //     newPos.y = this.radius;
-        // else if (newPos.y > window.innerHeight - this.radius)
-        //     newPos.y = window.innerHeight - this.radius;
+        return {
+            x: Number(this.entity.style.left.slice(0, -2)),
+            y: Number(this.entity.style.top.slice(0, -2))
+        }
+    }
 
-        this.entity.style.left = `${newPos.x}px`;
-        this.entity.style.top = `${newPos.y}px`;
+    setPos(pos)
+    {
+        this.entity.style.left = `${pos.x}px`;
+        this.entity.style.top = `${pos.y}px`;
 
-        return newPos;
+        return pos;
+    }
+
+    destroy()
+    {
+        clearInterval(this.intervalFunction);
+        this.entity.remove();
+    }
+
+    update()
+    {
+        const pos = this.getPos();
+        if (pos.x < 0 || pos.x > window.innerWidth || pos.y < 0 || pos.y > window.innerHeight)
+            this.destroy();
+
+        this.setPos({x: pos.x + this.speedVector.x, y: pos.y + this.speedVector.y});
     }
 }

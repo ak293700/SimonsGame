@@ -59,8 +59,7 @@ body {
 
 .bullet {
     position: fixed;
-    left: 10px;
-    top: 10px;
+    translate: -50% -50%;
 
     width: 5px;
     height: 5px;

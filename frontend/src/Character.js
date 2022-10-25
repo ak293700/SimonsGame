@@ -12,12 +12,11 @@ export class Character
         this.radius = radius;
         this.speed = speed
 
-        let character = document.createElement("div");
-        character.classList.add("character");
-        this.entity = character;
+        this.entity = document.createElement("div");
+        this.entity.classList.add("character");
 
         // On rajoute le caractère dans la page
-        document.body.appendChild(character);
+        document.body.appendChild(this.entity);
 
         this.setPos(pos);
     }
