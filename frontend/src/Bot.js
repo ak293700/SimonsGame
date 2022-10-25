@@ -57,6 +57,9 @@ export class Bot extends Character
         if (dead)
             this.destroy();
 
+        // change the opacity
+        this.entity.style.opacity = `.${Math.floor(this.health / this.maxHealth * 100)}`;
+
         return dead;
     }
 

@@ -46,6 +46,7 @@ export class Player extends Character
         }, 250);
 
         this.hpEntity = document.querySelector("#hp-content");
+        this.hpEntity.style.width = "100%";
     }
 
     setAngle(newDeg)

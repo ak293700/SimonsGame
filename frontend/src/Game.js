@@ -6,18 +6,27 @@ export class Game
 {
     static player;
     static bots;
-    static botsNumber;
+    static botNumber;
     static overlay = document.querySelector("#overlay-msg");
     static wave = document.querySelector("#wave-number");
     static active = false;
 
     static init(botNumber)
     {
-        Game.start();
-
+        Game.botNumber = botNumber;
         Game.player = new Player({x: window.innerWidth / 2, y: window.innerHeight / 2}, 25, 7, 10);
+        // Init the key manager property
+        KeyManager.init();
+
+        Game.start();
+    }
+
+    static newWave(botNumber = Game.botNumber)
+    {
+        Game.updateWaveNumber();
+
+        Game.botNumber = botNumber;
         Game.bots = [];
-        Game.botsNumber = botNumber;
 
         for (let i = 0; i < botNumber; i++)
         {
@@ -36,19 +45,13 @@ export class Game
             const bot = new Bot(pos, botType);
             Game.bots.push(bot);
         }
-
-        // Init the key manager property
-        KeyManager.init();
     }
 
     static finish()
     {
-        Game.player.destroy(false);
+        Game.setActive(false);
         Game.bots.forEach(bot => bot.destroy(false));
-
-        setTimeout(() => {
-            Game.init(Game.botsNumber + 1);
-        }, 5000);
+        Game.bots = [];
     }
 
     static writeOnOverlay(text)
@@ -61,17 +64,22 @@ export class Game
     {
         Game.writeOnOverlay("You win !");
         Game.finish();
+
+        setTimeout(() => {
+            Game.botNumber += 2;
+            Game.start();
+        }, 5000);
     }
 
     static lose()
     {
         Game.writeOnOverlay("You lose !");
-
-        console.log(Game.botsNumber);
-        Game.botsNumber /= 2;
-        console.log(Game.botsNumber);
-        Game.wave.innerText = "";
         Game.finish();
+
+        Game.wave.innerText = "";
+        setTimeout(() => {
+            Game.init(Game.botsNumber / 2 + 1);
+        }, 5000);
     }
 
     static setActive(active)
@@ -84,7 +92,7 @@ export class Game
 
     static start()
     {
-        Game.updateWaveNumber()
+        Game.newWave();
         Game.writeOnOverlay("3");
         setTimeout(() => {
             Game.writeOnOverlay("2");
@@ -100,7 +108,6 @@ export class Game
 
     static updateWaveNumber()
     {
-        console.log(Game.wave.innerText);
         if (Game.wave.innerText === "")
             Game.wave.innerText = "1";
         else
