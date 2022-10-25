@@ -78,7 +78,7 @@ export class Game
 
         Game.wave.innerText = "";
         setTimeout(() => {
-            Game.init(Game.botsNumber / 2 + 1);
+            Game.init(Game.botNumber / 2 + 1);
         }, 5000);
     }
 
