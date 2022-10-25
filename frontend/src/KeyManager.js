@@ -8,19 +8,13 @@ export class KeyManager
         window.addEventListener('keydown', (event) => {
             const key = event.key;
             if (!KeyManager.isPressed(key))
-            {
                 KeyManager.keyPressed.push(key);
-                console.log(`add ${key}`);
-            }
         });
         window.addEventListener('keyup', (event) => {
             const key = event.key;
             const index = KeyManager.keyPressed.indexOf(key);
             if (index !== -1)
-            {
                 KeyManager.keyPressed.splice(index, 1);
-                console.log(`remove ${key} - ${index}`)
-            }
         });
 
         setInterval(() => {
