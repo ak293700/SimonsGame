@@ -1,8 +1,10 @@
-import {normalize} from "./utils.js";
+import {areCollapsing, normalize} from "./utils.js";
+import {bots} from "./script.js";
 
 export class Weapon
 {
     entity;
+    bullets = [];
 
     constructor()
     {
@@ -25,22 +27,30 @@ export class Weapon
             y: window.screenY - playerPos.y
         });
 
-        new Bullet(playerPos, 4, dir);
+        const bullet = new Bullet(this, playerPos, 4, dir);
+        this.bullets.push(bullet);
     }
+
+
 }
 
 export class Bullet
 {
     entity;
-    pos;
     speed;
     speedVector;
     intervalFunction;
+    parentWeapon;
+    radius;
+    damage;
 
-    constructor(pos, speed, speedVector)
+    constructor(parentWeapon, pos, speed, speedVector)
     {
+        this.parentWeapon = parentWeapon;
         this.speed = speed;
         this.speedVector = speedVector;
+        this.radius = 3;
+        this.damage = 10;
 
         this.entity = document.createElement("div");
         this.entity.classList.add("bullet")
@@ -73,6 +83,9 @@ export class Bullet
     {
         clearInterval(this.intervalFunction);
         this.entity.remove();
+
+        const index = this.parentWeapon.bullets.indexOf(this);
+        this.parentWeapon.bullets.splice(index, 1);
     }
 
     update()
@@ -80,7 +93,25 @@ export class Bullet
         const pos = this.getPos();
         if (pos.x < 0 || pos.x > window.innerWidth || pos.y < 0 || pos.y > window.innerHeight)
             this.destroy();
+        else
+        {
+            this.setPos({x: pos.x + this.speedVector.x * this.speed, y: pos.y + this.speedVector.y * this.speed});
 
-        this.setPos({x: pos.x + this.speedVector.x * this.speed, y: pos.y + this.speedVector.y * this.speed});
+            for (let i = 0; i < bots.length; i++)
+            {
+                const bot = bots[i];
+                if (areCollapsing(pos, this.radius, bot.getPos(), bot.radius))
+                {
+                    const dead = bot.takeDamage(this.damage);
+                    if (dead)
+                    {
+                        bots.splice(i, 1);
+                        this.destroy()
+                        return;
+                    }
+
+                }
+            }
+        }
     }
 }

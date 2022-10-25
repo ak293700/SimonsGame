@@ -28,3 +28,16 @@ export function normalize(v)
         y: v.y / n
     }
 }
+
+export function areCollapsing(pos1, r1, pos2, r2)
+{
+    const vect = {
+        x: pos2.x - pos1.x,
+        y: pos2.y - pos1.y,
+    }
+
+    if (norm(vect) < r1 + r2)
+        return true;
+
+    return false;
+}

@@ -6,11 +6,13 @@ export class Character
     entity; // the entity in the html
     radius;
     speed;
+    health;
 
-    constructor(pos, radius, speed)
+    constructor(pos, radius, speed, health)
     {
         this.radius = radius;
-        this.speed = speed
+        this.speed = speed;
+        this.health = health;
 
         this.entity = document.createElement("div");
         this.entity.classList.add("character");
@@ -52,6 +54,17 @@ export class Character
         const pos = this.getPos();
         this.setPos({x: pos.x + move.x, y: pos.y + move.y});
     }
+
+    takeDamage(damage)
+    {
+        this.health -= damage;
+        return this.health <= 0;
+    }
+
+    destroy()
+    {
+        this.entity.remove();
+    }
 }
 
 export class Player extends Character
@@ -59,7 +72,7 @@ export class Player extends Character
     weapon;
     constructor(pos, radius, speed)
     {
-        super(pos, radius, speed);
+        super(pos, radius, speed, 100);
         this.entity.id = "player";
 
         this.weapon = new Weapon();
@@ -83,7 +96,7 @@ export class Player extends Character
 
         setInterval(() => {
             this.shoot()
-        }, 1000);
+        }, 250);
     }
 
     setAngle(newDeg)
@@ -101,6 +114,21 @@ export class Player extends Character
     {
         this.weapon.shoot(this.getPos());
     }
+
+    takeDamage(damage)
+    {
+        const dead = super.takeDamage(damage);
+        if (dead)
+            this.destroy();
+
+        return dead;
+    }
+
+    destroy()
+    {
+        super.destroy();
+        console.log("You loose");
+    }
 }
 
 export class Bot extends Character
@@ -109,24 +137,42 @@ export class Bot extends Character
     {
         let radius = 25;
         let speed = 10;
+        let health = 100;
 
         if (botType === "speed-bot")
         {
             radius = 15;
             speed = 15;
+            health = 50;
         }
         else if (botType === "fat-bot")
         {
             radius = 35;
             speed = 5;
+            health = 200
         }
 
-        super(pos, radius, speed);
+        super(pos, radius, speed, health);
         // <div class="character"></div>
 
         this.entity.classList.add("bot")
 
         if (botType !== undefined)
             this.entity.classList.add(botType)
+    }
+
+    destroy()
+    {
+        super.destroy();
+        console.log('You killed an ennemie');
+    }
+
+    takeDamage(damage)
+    {
+        const dead = super.takeDamage(damage);
+        if (dead)
+            this.destroy();
+
+        return dead;
     }
 }
