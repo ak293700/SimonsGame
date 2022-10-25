@@ -10,10 +10,7 @@ body {
 
 .character {
     position: absolute;
-    left: 0;
-    top: 0;
     translate: -50% -50%;
-    rotate: 45deg;
 
     width: 50px;
     height: 50px;
@@ -54,7 +51,6 @@ body {
 
     /* translate it of 15px on Y */
     transform: translateY(-15px);
-
 }
 
 .bullet {

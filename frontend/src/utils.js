@@ -20,11 +20,11 @@ function norm(v)
     return Math.sqrt(v.x ** 2 + v.y ** 2);
 }
 
-function normalize (v)
+export function normalize(v)
 {
     const n = norm(v);
     return {
-        x: v.x/n,
-        y: v.y/n
+        x: v.x / n,
+        y: v.y / n
     }
 }

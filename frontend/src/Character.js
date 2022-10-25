@@ -74,13 +74,20 @@ export class Player extends Character
                 this.move({x: 0, y: speed});
             if (event.key === 'a')
                 this.move({x: -speed, y: 0});
-        })
-        document.addEventListener("mousemove", (event) => this.turn(event.screenX, event.screenY))
+        });
+        document.addEventListener("mousemove", (event) => {
+            window.screenX = event.screenX;
+            window.screenY = event.screenY;
+            this.turn(event.screenX, event.screenY)
+        });
+
+        setInterval(() => {
+            this.shoot()
+        }, 1000);
     }
 
     setAngle(newDeg)
     {
-        // console.log(newDeg)
         this.entity.style.rotate = `${newDeg}deg`;
     }
 
@@ -88,6 +95,11 @@ export class Player extends Character
     {
         const angle = computeAngle(this.getPos(), {x: mouseX, y: mouseY});
         this.setAngle(angle);
+    }
+
+    shoot()
+    {
+        this.weapon.shoot(this.getPos());
     }
 }
 
