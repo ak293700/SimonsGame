@@ -1,9 +1,13 @@
 import {Bot, Player} from "./Character.js";
+import {KeyManager} from "./KeyManager.js";
 
-const player = new Player({x: window.innerWidth / 2, y: window.innerHeight / 2}, 25, 10);
+// Init the key manager property
+KeyManager.init();
+
+const player = new Player({x: window.innerWidth / 2, y: window.innerHeight / 2}, 25, 7);
 export let bots = [];
 
-for (let i = 0; i < 3; i++)
+for (let i = 0; i < 10; i++)
 {
     // generate random pos within the window screen
     const pos = {

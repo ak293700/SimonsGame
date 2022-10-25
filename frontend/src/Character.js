@@ -1,5 +1,6 @@
 import {computeAngle} from "./utils.js";
 import {Weapon} from "./Weapon.js"
+import {KeyManager} from "./KeyManager.js";
 
 export class Character
 {
@@ -78,16 +79,19 @@ export class Player extends Character
         this.weapon = new Weapon();
         this.entity.appendChild(this.weapon.entity)
 
-        document.addEventListener("keydown", (event) => {
-            if (event.key === 'w')
+        // subscribe to event KeyManager
+
+        window.addEventListener("KeyManager", () => {
+            if (KeyManager.isPressed('w'))
                 this.move({x: 0, y: -speed});
-            if (event.key === 'd')
+            if (KeyManager.isPressed('d'))
                 this.move({x: speed, y: 0});
-            if (event.key === 's')
+            if (KeyManager.isPressed('s'))
                 this.move({x: 0, y: speed});
-            if (event.key === 'a')
+            if (KeyManager.isPressed('a'))
                 this.move({x: -speed, y: 0});
         });
+
         document.addEventListener("mousemove", (event) => {
             window.screenX = event.screenX;
             window.screenY = event.screenY;
