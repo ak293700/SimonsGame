@@ -5,11 +5,13 @@ export class Weapon
 {
     entity;
     bullets = [];
+    damage;
 
-    constructor()
+    constructor(damage)
     {
         this.entity = document.createElement("div");
         this.entity.classList.add("weapon");
+        this.damage = damage;
     }
 
     getPos()
@@ -27,7 +29,7 @@ export class Weapon
             y: window.screenY - playerPos.y
         });
 
-        const bullet = new Bullet(this, playerPos, 4, dir);
+        const bullet = new Bullet(this, playerPos, 4, dir, this.damage);
         this.bullets.push(bullet);
     }
 
@@ -44,13 +46,13 @@ export class Bullet
     radius;
     damage;
 
-    constructor(parentWeapon, pos, speed, speedVector)
+    constructor(parentWeapon, pos, speed, speedVector, damage)
     {
         this.parentWeapon = parentWeapon;
         this.speed = speed;
         this.speedVector = speedVector;
         this.radius = 3;
-        this.damage = 10;
+        this.damage = damage;
 
         this.entity = document.createElement("div");
         this.entity.classList.add("bullet")
@@ -106,7 +108,9 @@ export class Bullet
                     if (dead)
                     {
                         bots.splice(i, 1);
+                        bot.destroy()
                         this.destroy()
+
                         return;
                     }
 
