@@ -4,6 +4,10 @@
     box-sizing: border-box;
 }
 
+body {
+    height: 100vh;
+}
+
 .character {
     position: absolute;
     left: 0;
@@ -27,6 +31,20 @@
 
 #player {
     background: blue;
+}
+
+.bot {
+    background: #8f1732;
+}
+
+.speed-bot {
+    width: 30px;
+    height: 30px;
+}
+
+.fat-bot {
+    width: 70px;
+    height: 70px;
 }
 
 .weapon {

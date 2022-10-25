@@ -12,14 +12,11 @@ export class Character
         this.speed = speed
 
         let character = document.createElement("div");
-        this.entity = character;
         character.classList.add("character");
+        this.entity = character;
 
-        let weapon = document.createElement("div");
-        weapon.classList.add("weapon");
-
+        // On rajoute le caractère dans la page
         document.body.appendChild(character);
-        character.appendChild(weapon);
 
         this.setPos(pos);
     }
@@ -50,11 +47,11 @@ export class Character
     }
 
     // move: {x: 0, y: 0}
-     move(move)
-     {
-         const pos = this.getPos();
-         this.setPos({x: pos.x + move.x, y: pos.y + move.y});
-     }
+    move(move)
+    {
+        const pos = this.getPos();
+        this.setPos({x: pos.x + move.x, y: pos.y + move.y});
+    }
 }
 
 export class Player extends Character
@@ -63,6 +60,10 @@ export class Player extends Character
     {
         super(pos, radius, speed);
         this.entity.id = "player";
+
+        let weapon = document.createElement("div");
+        weapon.classList.add("weapon");
+        this.entity.appendChild(weapon);
 
         document.addEventListener("keydown", (event) => {
             if (event.key === 'w')
@@ -90,7 +91,30 @@ export class Player extends Character
     }
 }
 
-class Bot extends Character
+export class Bot extends Character
 {
+    constructor(pos, botType)
+    {
+        let radius = 25;
+        let speed = 10;
 
+        if (botType === "speed-bot")
+        {
+            radius = 15;
+            speed = 15;
+        }
+        else if (botType === "fat-bot")
+        {
+            radius = 35;
+            speed = 5;
+        }
+
+        super(pos, radius, speed);
+        // <div class="character"></div>
+
+        this.entity.classList.add("bot")
+
+        if (botType !== undefined)
+            this.entity.classList.add(botType)
+    }
 }
