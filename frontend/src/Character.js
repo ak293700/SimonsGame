@@ -1,4 +1,5 @@
 import {computeAngle} from "./utils.js";
+import {Weapon} from "./Weapon.js"
 
 export class Character
 {
@@ -56,14 +57,14 @@ export class Character
 
 export class Player extends Character
 {
+    weapon;
     constructor(pos, radius, speed)
     {
         super(pos, radius, speed);
         this.entity.id = "player";
 
-        let weapon = document.createElement("div");
-        weapon.classList.add("weapon");
-        this.entity.appendChild(weapon);
+        this.weapon = new Weapon();
+        this.entity.appendChild(this.weapon.entity)
 
         document.addEventListener("keydown", (event) => {
             if (event.key === 'w')
