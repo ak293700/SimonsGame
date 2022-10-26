@@ -6,10 +6,7 @@ export function computeAngle(pos1, pos2)
     }
 
     // direction
-    const dir = normalize({
-        x: pos2.x - pos1.x,
-        y: pos2.y - pos1.y
-    })
+    const dir = normalize(diffVector(pos1, pos2));
 
     const angle = Math.acos(dir.x * ref.x + dir.y * ref.y) * 180 / Math.PI;
     return dir.x < 0 ? 360 - angle : angle;
@@ -40,4 +37,12 @@ export function areCollapsing(pos1, r1, pos2, r2)
         return true;
 
     return false;
+}
+
+export function diffVector(v1, v2)
+{
+    return {
+        x: v2.x - v1.x,
+        y: v2.y - v1.y
+    }
 }

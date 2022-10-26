@@ -1,4 +1,4 @@
-import {normalize} from "./utils.js";
+import {diffVector, normalize} from "./utils.js";
 import {Bullet} from "./Bullet.js";
 
 export class Weapon
@@ -24,12 +24,9 @@ export class Weapon
 
   shoot(playerPos)
   {
-    const dir = normalize({
-      x: window.clientX - playerPos.x,
-      y: window.clientY - playerPos.y,
-    });
+    const dir = normalize(diffVector(playerPos, {x: window.clientX, y: window.clientY}));
 
-    const bullet = new Bullet(this, playerPos, 10, dir, this.damage);
+    const bullet = new Bullet(this, playerPos, 15, dir, this.damage);
     this.bullets.push(bullet);
   }
 }

@@ -1,10 +1,12 @@
-import {areCollapsing, normalize} from "./utils.js";
+import {areCollapsing, computeAngle, diffVector, normalize} from "./utils.js";
 import {Character} from "./Character.js";
 import {Game} from "./Game.js";
 
 export class Bot extends Character
 {
     canHit = true;
+    leftEyeEntity;
+    rightEyeEntity;
 
     constructor(pos, botType)
     {
@@ -30,8 +32,11 @@ export class Bot extends Character
 
         super(pos, radius, speed, health, damage);
 
-        this.entity.innerHTML = '<div class="eye"></div><div class="eye"></div>';
+        this.entity.innerHTML = '<div class="eye bot-eye"></div><div class="eye bot-eye"></div>';
         this.entity.classList.add("bot")
+
+        this.leftEyeEntity = this.entity.querySelector(".eye:nth-child(1)");
+        this.rightEyeEntity = this.entity.querySelector(".eye:nth-child(2)");
 
         if (botType !== undefined)
             this.entity.classList.add(botType)
@@ -65,19 +70,17 @@ export class Bot extends Character
 
     update()
     {
+        this.lookAt(Game.player.getPos());
+
         if (!this.active || !this.canHit)
             return;
 
         const playerPos = Game.player.getPos();
         const pos = this.getPos();
-        const dir = normalize({
-            x: playerPos.x - pos.x,
-            y: playerPos.y - pos.y
-        });
+        const dir = normalize(diffVector(pos, playerPos));
 
         dir.x *= this.speed;
         dir.y *= this.speed;
-
 
         this.move(dir);
 
@@ -87,5 +90,16 @@ export class Bot extends Character
             this.canHit = false;
             setTimeout(() => this.canHit = true, 1000);
         }
+    }
+
+    // make eyes of the bot look at point argument
+    lookAt(point)
+    {
+        const pos = this.getPos();
+        const angle = computeAngle(pos, point);
+
+        this.leftEyeEntity.style.rotate = `${angle}deg`;
+        this.rightEyeEntity.style.rotate = `${angle}deg`;
+
     }
 }
