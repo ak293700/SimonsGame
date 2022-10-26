@@ -76,8 +76,8 @@ export class Game
         Game.writeOnOverlay("You lose !");
         Game.finish();
 
-        Game.wave.innerText = "";
         setTimeout(() => {
+            Game.wave.innerText = "";
             Game.init(Game.botNumber / 2 + 1);
         }, 5000);
     }

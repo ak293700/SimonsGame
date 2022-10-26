@@ -12,6 +12,9 @@ export class Player extends Character
     constructor(pos, radius, speed, damage)
     {
         super(pos, radius, speed, 100, damage);
+        window.clientX = pos.x;
+        window.clientY = pos.y - 1;
+
         this.entity.id = "player";
 
         this.weapon = new Weapon(damage);
@@ -27,15 +30,17 @@ export class Player extends Character
                 this.move({x: 0, y: speed});
             if (KeyManager.isPressed('a'))
                 this.move({x: -speed, y: 0});
+
+            this.turn(window.clientX, window.clientY);
         });
 
         document.addEventListener("mousemove", (event) => {
             if (!this.active)
                 return;
 
-            window.screenX = event.screenX;
-            window.screenY = event.screenY;
-            this.turn(event.screenX, event.screenY)
+            window.clientX = event.clientX;
+            window.clientY = event.clientY;
+            this.turn(event.clientX, event.clientY)
         });
 
         this.intervalId = setInterval(() => {
@@ -43,10 +48,11 @@ export class Player extends Character
                 return;
 
             this.shoot()
-        }, 250);
+        }, 150);
 
         this.hpEntity = document.querySelector("#hp-content");
         this.hpEntity.style.width = "100%";
+        this.hpEntity.style.backgroundColor = "forestgreen";
     }
 
     setAngle(newDeg)
@@ -81,6 +87,9 @@ export class Player extends Character
         super.destroy();
         if (!doThink)
             return;
+
+        this.hpEntity.style.width = "100%";
+        this.hpEntity.style.backgroundColor = "crimson";
 
         Game.lose();
     }

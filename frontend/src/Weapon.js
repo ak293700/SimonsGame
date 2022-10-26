@@ -25,8 +25,8 @@ export class Weapon
     shoot(playerPos)
     {
         const dir = normalize({
-            x: window.screenX - playerPos.x,
-            y: window.screenY - playerPos.y
+            x: window.clientX - playerPos.x,
+            y: window.clientY - playerPos.y
         });
 
         const bullet = new Bullet(this, playerPos, 4, dir, this.damage);

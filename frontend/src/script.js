@@ -1,3 +1,3 @@
 import {Game} from "./Game.js";
 
-Game.init(4);
+Game.init(15);
